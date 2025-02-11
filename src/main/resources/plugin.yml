@@ -1,0 +1,4 @@
+name: CSTeam
+version: '1.0-SNAPSHOT'
+main: org.cheesesand.csTeam.CSTeam
+api-version: '1.20'
