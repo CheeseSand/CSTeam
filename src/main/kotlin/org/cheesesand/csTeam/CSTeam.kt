@@ -17,13 +17,42 @@ class CSTeam : JavaPlugin(), Listener {
         var dataFolder = File(dataFolder, "playerData")
         if (!dataFolder.exists()) {
             dataFolder.mkdirs()
+
+            dataFolder = File(dataFolder, "teamData")
+            if (!dataFolder.exists()){
+                logger.info("playerData 폴더 생성을 실패하였습니다!")
+                server.pluginManager.disablePlugin(this)
+            }
+
+            logger.info("playerData 폴더 생성 완료!")
         }
-
-
 
         dataFolder = File(dataFolder, "teamData")
         if (!dataFolder.exists()) {
             dataFolder.mkdirs()
+
+            dataFolder = File(dataFolder, "teamData")
+            if (!dataFolder.exists()){
+                logger.info("teamData 폴더 생성을 실패하였습니다!")
+                server.pluginManager.disablePlugin(this)
+            }
+            
+            logger.info("teamData 폴더 생성 완료!")
+        }
+
+        var configFile = File(dataFolder, "config.yml")
+
+        saveDefaultConfig()
+
+        if (!configFile.exists()) {
+            configFile = File(dataFolder, "config.yml")
+
+            if(!configFile.exists()){
+                logger.info("기본 설정 파일(config.yml) 생성을 실패하였습니다!")
+                server.pluginManager.disablePlugin(this)
+            }
+
+            logger.info("기본 설정 파일(config.yml) 생성 완료!")
         }
 
         logger.info("CSTeam Enabled!")
