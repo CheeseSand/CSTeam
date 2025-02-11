@@ -20,8 +20,9 @@ class CSTeam : JavaPlugin(), Listener {
 
             dataFolder = File(dataFolder, "teamData")
             if (!dataFolder.exists()){
-                logger.info("playerData 폴더 생성을 실패하였습니다!")
+                logger.severe("playerData 폴더 생성을 실패하였습니다!")
                 server.pluginManager.disablePlugin(this)
+                return
             }
 
             logger.info("playerData 폴더 생성 완료!")
@@ -33,8 +34,9 @@ class CSTeam : JavaPlugin(), Listener {
 
             dataFolder = File(dataFolder, "teamData")
             if (!dataFolder.exists()){
-                logger.info("teamData 폴더 생성을 실패하였습니다!")
+                logger.severe("teamData 폴더 생성을 실패하였습니다!")
                 server.pluginManager.disablePlugin(this)
+                return
             }
             
             logger.info("teamData 폴더 생성 완료!")
@@ -48,8 +50,9 @@ class CSTeam : JavaPlugin(), Listener {
             configFile = File(dataFolder, "config.yml")
 
             if(!configFile.exists()){
-                logger.info("기본 설정 파일(config.yml) 생성을 실패하였습니다!")
+                logger.severe("기본 설정 파일(config.yml) 생성을 실패하였습니다!")
                 server.pluginManager.disablePlugin(this)
+                return
             }
 
             logger.info("기본 설정 파일(config.yml) 생성 완료!")
