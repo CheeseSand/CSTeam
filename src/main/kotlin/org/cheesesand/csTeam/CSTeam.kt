@@ -1,5 +1,7 @@
 package org.cheesesand.csTeam
 
+import net.luckperms.api.LuckPerms
+import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -57,6 +59,17 @@ class CSTeam : JavaPlugin(), Listener {
 
             logger.info("기본 설정 파일(config.yml) 생성 완료!")
         }
+
+        val provider = Bukkit.getServicesManager().getRegistration(LuckPerms::class.java)
+
+        if (provider == null) {
+            logger.severe("LuckPerms 플러그인을 찾을 수 없습니다!")
+            server.pluginManager.disablePlugin(this)
+            return
+        }
+
+        val api: LuckPerms = provider.provider
+        logger.info("LuckPerms 발견! ${api.pluginMetadata.version}")
 
         logger.info("CSTeam Enabled!")
     }
