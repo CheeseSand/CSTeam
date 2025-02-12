@@ -16,12 +16,13 @@ class CSTeam : JavaPlugin(), Listener {
 //
 //        val daydream = DayDream(this.server)
 
-        var dataFolder = File(dataFolder, "playerData")
-        if (!dataFolder.exists()) {
-            dataFolder.mkdirs()
+        var csDataFolder = File(dataFolder, "playerData")
 
-            dataFolder = File(dataFolder, "playerData")
-            if (!dataFolder.exists()){
+        if (!csDataFolder.exists()) {
+            csDataFolder.mkdirs()
+
+            csDataFolder = File(dataFolder, "playerData")
+            if (!csDataFolder.exists()){
                 logger.severe("playerData 폴더 생성을 실패하였습니다!")
                 server.pluginManager.disablePlugin(this)
                 return
@@ -30,12 +31,13 @@ class CSTeam : JavaPlugin(), Listener {
             logger.info("playerData 폴더 생성 완료!")
         }
 
-        dataFolder = File(dataFolder, "teamData")
-        if (!dataFolder.exists()) {
-            dataFolder.mkdirs()
+        csDataFolder = File(dataFolder, "teamData")
 
-            dataFolder = File(dataFolder, "teamData")
-            if (!dataFolder.exists()){
+        if (!csDataFolder.exists()) {
+            csDataFolder.mkdirs()
+
+            csDataFolder = File(dataFolder, "teamData")
+            if (!csDataFolder.exists()){
                 logger.severe("teamData 폴더 생성을 실패하였습니다!")
                 server.pluginManager.disablePlugin(this)
                 return
