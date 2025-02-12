@@ -20,7 +20,7 @@ class CSTeam : JavaPlugin(), Listener {
         if (!dataFolder.exists()) {
             dataFolder.mkdirs()
 
-            dataFolder = File(dataFolder, "teamData")
+            dataFolder = File(dataFolder, "playerData")
             if (!dataFolder.exists()){
                 logger.severe("playerData 폴더 생성을 실패하였습니다!")
                 server.pluginManager.disablePlugin(this)
