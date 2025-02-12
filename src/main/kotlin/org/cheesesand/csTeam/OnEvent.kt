@@ -6,6 +6,11 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.plugin.java.JavaPlugin
+import net.luckperms.api.LuckPerms
+import net.luckperms.api.cacheddata.CachedMetaData
+import net.luckperms.api.model.user.User
+import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import java.io.File
 
 class OnEvent(private val plugin: JavaPlugin) : Listener {
@@ -14,30 +19,43 @@ class OnEvent(private val plugin: JavaPlugin) : Listener {
         val damager = event.damager
         val entity = event.entity
 
-        if (damager is Player && entity is Player) {
-            // 세부 조건 나중에 추가
-            event.isCancelled = true
+        if (damager !is Player || entity !is Player) {
+            return
         }
+
+        if (/*팀이 같지 않다면*/ true) {
+            return
+        }
+
+        if(/*팀 설정의 pvp가 활성화 되있다면*/ false) {
+            return
+        }
+
+        event.isCancelled = true
     }
 
     @EventHandler
     fun onPlayerChat(event: AsyncPlayerChatEvent) {
-        val player = event.player
-        
-        // 데이터 관리 코드 따로 만들기
-//        val dataFolder = File(plugin.dataFolder, "playerData")
-//        val file = File(dataFolder, "${player.uniqueId}.dat")
-//
-//        if (!file.exists()) {
-////            event.sender.sendMessage(Component.text("저장된 내용이 없습니다."))
-//            //return true
-//        }
-//
-//        try {
-//
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            plugin.logger.info("class onPlayerChat에서 ${player.uniqueId}.dat를 불러오는데 실패했습니다.")
-//        }
+        var format = "${event.player.name}: ${event.message}"
+
+        val provider = Bukkit.getServicesManager().getRegistration(LuckPerms::class.java)
+
+        if (provider != null) {
+            val luckPerms = provider.provider
+            val user: User? = luckPerms.userManager.getUser(event.player.uniqueId)
+
+            if (user != null) {
+                val metaData: CachedMetaData = user.cachedData.metaData
+                var prefix = metaData.prefix ?: ""
+                var suffix = metaData.suffix ?: ""
+
+                prefix = ChatColor.translateAlternateColorCodes('&', prefix)
+                suffix = ChatColor.translateAlternateColorCodes('&', suffix)
+
+                format = "$prefix${event.player.name}$suffix: ${event.message}"
+            }
+        }
+
+        event.format = format
     }
 }

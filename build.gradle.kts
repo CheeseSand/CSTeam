@@ -11,6 +11,7 @@ dependencies {
 
     implementation(platform("com.intellectualsites.bom:bom-1.18.x:1.22"))
 
+    compileOnly("net.luckperms:api:5.4")
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

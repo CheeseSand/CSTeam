@@ -1,8 +1,10 @@
 package org.cheesesand.csTeam.commands
 
+import org.cheesesand.csTeam.TeamException
 import org.cheesesand.csTeam.commands.actions.*
 import org.cheesesand.csTeam.commands.actions.op.*
 import org.cheesesand.csTeam.commands.actions.user.*
+import org.cheesesand.csTeam.executedCommandIsNotCorrect
 import org.teamcrez.daydream.event.CommandExecuteEvent
 import org.teamcrez.daydream.event.TabCompleteEvent
 import org.teamcrez.daydream.wrapper.CommandObject
@@ -29,16 +31,19 @@ class TeamCommand: CommandObject() {
     }
 
     override fun execute(event: CommandExecuteEvent): Boolean {
-//        return try {
-//            if (event.args.isNotEmpty() && actions.keys.contains(event.args[0])) {
-//                actions[event.args[0]]!!.execute(event.sender, ArrayList(event.args.drop(1)))
-//                true
-//            } else throw executedCommandIsNotCorrect
-//        } catch(exception: PlotException) {
-//            event.sender.sendMessage(exception.component)
-//            false
-//        }
-        return true
+        try{
+            if(event.args.isEmpty() || !actions.keys.contains(event.args[0])){
+                throw executedCommandIsNotCorrect
+            }
+
+            val command = actions[event.args[0]] ?: throw executedCommandIsNotCorrect
+
+            command.execute(event.sender, ArrayList(event.args.drop(1)))
+            return true
+        } catch (exception: TeamException) {
+            event.sender.sendMessage(exception.message ?: "")
+            return false
+        }
     }
 
     override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
