@@ -1,5 +1,6 @@
 package org.cheesesand.csTeam.commands
 
+import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.TeamException
 import org.cheesesand.csTeam.commands.actions.*
 import org.cheesesand.csTeam.commands.actions.op.*
@@ -9,25 +10,25 @@ import org.teamcrez.daydream.event.CommandExecuteEvent
 import org.teamcrez.daydream.event.TabCompleteEvent
 import org.teamcrez.daydream.wrapper.CommandObject
 
-class TeamCommand: CommandObject() {
+class TeamCommand(plugin: JavaPlugin): CommandObject() {
 
     private val actions = HashMap<String, TeamActionCommand>()
     init {
         actions["accept"] = AcceptAction()
         actions["chat"] = ChatAction()
-        actions["create"] = CreateAction()
+        actions["create"] = CreateAction(plugin)
         actions["deny"] = DenyAction()
-        actions["info"] = InfoAction()
+        actions["info"] = InfoAction(plugin)
         actions["invite"] = InviteAction()
         actions["kick"] = KickAction()
         actions["leave"] = LeaveAction()
-        actions["list"] = ListAction()
+        actions["list"] = ListAction(plugin)
         actions["remove"] = RemoveAction()
 
         actions["delete"] = DeleteAction()
         actions["fkick"] = FKickAction()
         actions["fset"] = FSetAction()
-        actions["reset"] = ResetAction()
+        actions["reset"] = ResetAction(plugin)
     }
 
     override fun execute(event: CommandExecuteEvent): Boolean {
@@ -41,7 +42,7 @@ class TeamCommand: CommandObject() {
             command.execute(event.sender, ArrayList(event.args.drop(1)))
             return true
         } catch (exception: TeamException) {
-            event.sender.sendMessage(exception.message ?: "")
+            event.sender.sendMessage(exception.component)
             return false
         }
     }

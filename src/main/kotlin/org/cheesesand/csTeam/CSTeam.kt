@@ -11,51 +11,7 @@ import java.io.File
 
 class CSTeam : JavaPlugin(), Listener {
     override fun onEnable() {
-        var fileCheck = File(dataFolder, "playerData")
-
-        if (!fileCheck.exists()) {
-            fileCheck.mkdirs()
-
-            fileCheck = File(dataFolder, "playerData")
-            if (!fileCheck.exists()){
-                logger.severe("playerData 폴더 생성을 실패하였습니다!")
-                server.pluginManager.disablePlugin(this)
-                return
-            }
-
-            logger.info("playerData 폴더 생성 완료!")
-        }
-
-        fileCheck = File(dataFolder, "teamData")
-
-        if (!fileCheck.exists()) {
-            fileCheck.mkdirs()
-
-            fileCheck = File(dataFolder, "teamData")
-            if (!fileCheck.exists()){
-                logger.severe("teamData 폴더 생성을 실패하였습니다!")
-                server.pluginManager.disablePlugin(this)
-                return
-            }
-            
-            logger.info("teamData 폴더 생성 완료!")
-        }
-
-        fileCheck = File(dataFolder, "config.yml")
-
-        saveDefaultConfig()
-
-        if (!fileCheck.exists()) {
-            fileCheck = File(dataFolder, "config.yml")
-
-            if(!fileCheck.exists()){
-                logger.severe("기본 설정 파일(config.yml) 생성을 실패하였습니다!")
-                server.pluginManager.disablePlugin(this)
-                return
-            }
-
-            logger.info("기본 설정 파일(config.yml) 생성 완료!")
-        }
+        fileExists()
 
         val provider = Bukkit.getServicesManager().getRegistration(LuckPerms::class.java)
 
@@ -78,6 +34,54 @@ class CSTeam : JavaPlugin(), Listener {
         logger.info("CSTeam Disabled!")
     }
 
+    private fun fileExists() {
+        var file = File(dataFolder, "playerData")
+
+        if (!file.exists()) {
+            file.mkdirs()
+
+            file = File(dataFolder, "playerData")
+            if (!file.exists()){
+                logger.severe("playerData 폴더 생성을 실패하였습니다!")
+                server.pluginManager.disablePlugin(this)
+                return
+            }
+
+            logger.info("playerData 폴더 생성 완료!")
+        }
+
+        file = File(dataFolder, "teamData.json")
+
+        if (!file.exists()) {
+            file.writeText("[]")
+
+            file = File(dataFolder, "teamData.json")
+            if (!file.exists()){
+                logger.severe("teamData.json 생성을 실패하였습니다!")
+                server.pluginManager.disablePlugin(this)
+                return
+            }
+
+            logger.info("teamData.json 생성 완료!")
+        }
+
+        file = File(dataFolder, "config.yml")
+
+        saveDefaultConfig()
+
+        if (!file.exists()) {
+            file = File(dataFolder, "config.yml")
+
+            if(!file.exists()){
+                logger.severe("기본 설정 파일(config.yml) 생성을 실패하였습니다!")
+                server.pluginManager.disablePlugin(this)
+                return
+            }
+
+            logger.info("기본 설정 파일(config.yml) 생성 완료!")
+        }
+    }
+
     private fun registerEvents() {
         server.pluginManager.apply {
             this.registerEvents(OnEvent(this@CSTeam), this@CSTeam)
@@ -86,7 +90,7 @@ class CSTeam : JavaPlugin(), Listener {
 
     private fun syncPlotSquaredCommand() {
         val commandMap = HashMap<String, CommandObject>()
-        commandMap["csteam"] = TeamCommand()
+        commandMap["csteam"] = TeamCommand(this@CSTeam)
         val daydream = DayDream(server)
         daydream.applyCommand("csteam", commandMap)
     }
