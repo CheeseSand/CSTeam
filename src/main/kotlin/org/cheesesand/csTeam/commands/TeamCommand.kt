@@ -1,6 +1,8 @@
 package org.cheesesand.csTeam.commands
 
 import org.cheesesand.csTeam.commands.actions.*
+import org.cheesesand.csTeam.commands.actions.op.*
+import org.cheesesand.csTeam.commands.actions.user.*
 import org.teamcrez.daydream.event.CommandExecuteEvent
 import org.teamcrez.daydream.event.TabCompleteEvent
 import org.teamcrez.daydream.wrapper.CommandObject
@@ -9,7 +11,21 @@ class TeamCommand: CommandObject() {
 
     private val actions = HashMap<String, TeamActionCommand>()
     init {
-        //actions["구매"] = PlotBuyAction()
+        actions["accept"] = AcceptAction()
+        actions["chat"] = ChatAction()
+        actions["create"] = CreateAction()
+        actions["deny"] = DenyAction()
+        actions["info"] = InfoAction()
+        actions["invite"] = InviteAction()
+        actions["kick"] = KickAction()
+        actions["leave"] = LeaveAction()
+        actions["list"] = ListAction()
+        actions["remove"] = RemoveAction()
+
+        actions["delete"] = DeleteAction()
+        actions["fkick"] = FKickAction()
+        actions["fset"] = FSetAction()
+        actions["reset"] = ResetAction()
     }
 
     override fun execute(event: CommandExecuteEvent): Boolean {
@@ -22,7 +38,7 @@ class TeamCommand: CommandObject() {
 //            event.sender.sendMessage(exception.component)
 //            false
 //        }
-        return true;
+        return true
     }
 
     override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
