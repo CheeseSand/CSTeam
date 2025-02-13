@@ -1,15 +1,16 @@
 package org.cheesesand.csTeam.commands.actions.user
 
+import kotlinx.serialization.json.Json
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
-import org.cheesesand.csTeam.Invitation
+import org.cheesesand.csTeam.*
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
-import org.cheesesand.csTeam.activeInvitations
-import org.cheesesand.csTeam.isNotAPlayer
-import org.cheesesand.csTeam.playerNotFound
+import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class InviteAction(private val plugin: JavaPlugin): TeamActionCommand(){
     override fun execute(sender: CommandSender, args: ArrayList<String>) {
@@ -30,6 +31,36 @@ class InviteAction(private val plugin: JavaPlugin): TeamActionCommand(){
 
         if (existingInvitation != null) {
             sender.sendMessage(Component.text("${target.name}님은 이미 유효한 초대를 받았습니다."))
+            return
+        }
+
+        var playerUUID: UUID = sender.uniqueId
+        val playerDataFolder = File(plugin.dataFolder, "playerData")
+        var file = File(playerDataFolder, "${playerUUID}.dat")
+
+        if (!file.exists()) {
+//            throw teamNotFound
+            // 팀 소속 X throw
+            return
+        }
+
+        val playerData: PlayerDataStruct = Json.decodeFromString(file.readText())
+        val teamName = playerData.teamName ?: throw teamNotFound
+
+        file = File(plugin.dataFolder, "teamData.json")
+        val teams: List<TeamDataStruct> = Json.decodeFromString(file.readText())
+        val team = teams.find { it.name == teamName } ?: throw unknownError
+
+        if(team.owner != playerUUID){
+//            throw notOwner
+            return
+        }
+
+        playerUUID = target.uniqueId
+        file = File(playerDataFolder, "${playerUUID}.dat")
+
+        if (file.exists()) {
+            // 이티 팀 있음 에러
             return
         }
 

@@ -24,7 +24,7 @@ class TeamCommand(plugin: JavaPlugin): CommandObject() {
         actions["kick"] = KickAction(plugin)
         actions["leave"] = LeaveAction(plugin)
         actions["list"] = ListAction(plugin)
-        actions["remove"] = RemoveAction()
+        actions["remove"] = RemoveAction(plugin)
 
         actions["delete"] = DeleteAction()
         actions["fkick"] = FKickAction(plugin)

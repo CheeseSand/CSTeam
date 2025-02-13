@@ -2,7 +2,6 @@ package org.cheesesand.csTeam.commands.actions.user
 
 import kotlinx.serialization.json.Json
 import net.kyori.adventure.text.Component
-import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -26,7 +25,7 @@ class CreateAction(private val plugin: JavaPlugin): TeamActionCommand(){
             throw alreadyExistsTeam
         }
 
-        val senderUUID: UUID = Bukkit.getPlayerUniqueId(sender.name) ?: throw unknownError
+        val senderUUID: UUID = sender.uniqueId
         var playerDataFolder = File(plugin.dataFolder, "playerData")
         file = File(playerDataFolder, "${senderUUID}.dat")
 

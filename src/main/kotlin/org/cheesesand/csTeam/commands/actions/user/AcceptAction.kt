@@ -2,7 +2,6 @@ package org.cheesesand.csTeam.commands.actions.user
 
 import kotlinx.serialization.json.Json
 import net.kyori.adventure.text.Component
-import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -10,9 +9,7 @@ import org.cheesesand.csTeam.PlayerDataStruct
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
 import org.cheesesand.csTeam.activeInvitations
 import org.cheesesand.csTeam.isNotAPlayer
-import org.cheesesand.csTeam.unknownError
 import java.io.File
-import java.util.*
 import kotlin.collections.ArrayList
 
 class AcceptAction(private val plugin: JavaPlugin): TeamActionCommand(){
@@ -30,9 +27,8 @@ class AcceptAction(private val plugin: JavaPlugin): TeamActionCommand(){
             return
         }
 
-        var playerUUID: UUID = Bukkit.getPlayerUniqueId(invitation.sender.name) ?: throw unknownError
         val playerDataFolder = File(plugin.dataFolder, "playerData")
-        val playerfile = File(playerDataFolder, "${playerUUID}.dat")
+        val playerfile = File(playerDataFolder, "${invitation.sender.uniqueId}.dat")
 
         val playerData: PlayerDataStruct = Json.decodeFromString(playerfile.readText())
 
@@ -42,8 +38,7 @@ class AcceptAction(private val plugin: JavaPlugin): TeamActionCommand(){
         )
 
         val jsonString = Json.encodeToString(player)
-        playerUUID = Bukkit.getPlayerUniqueId(sender.name) ?: throw unknownError
-        File(playerDataFolder, "${playerUUID}.dat").writeText(jsonString)
+        File(playerDataFolder, "${sender.uniqueId}.dat").writeText(jsonString)
 
         activeInvitations.remove(invitation)
         invitation.sender.sendMessage(Component.text("${sender.name}님이 초대를 수락했습니다."))

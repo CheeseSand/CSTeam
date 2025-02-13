@@ -8,8 +8,13 @@ import org.teamcrez.daydream.DayDream
 import org.cheesesand.csTeam.commands.TeamCommand
 import org.teamcrez.daydream.wrapper.CommandObject
 import java.io.File
+import java.util.HashMap
+import java.util.UUID
+
+
 
 val activeInvitations = mutableListOf<Invitation>()
+var teamChatStatus: HashMap<UUID, Boolean> = HashMap()
 
 class CSTeam : JavaPlugin(), Listener {
     override fun onEnable() {

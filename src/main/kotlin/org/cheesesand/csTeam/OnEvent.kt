@@ -1,5 +1,6 @@
 package org.cheesesand.csTeam
 
+import kotlinx.serialization.json.Json
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -23,11 +24,31 @@ class OnEvent(private val plugin: JavaPlugin) : Listener {
             return
         }
 
-        if (/*팀이 같지 않다면*/ true) {
+        val playerDataFolder = File(plugin.dataFolder, "playerData")
+        var file = File(playerDataFolder, "${event.damager.uniqueId}.dat")
+
+        if (!file.exists()) {
             return
         }
 
-        if(/*팀 설정의 pvp가 활성화 되있다면*/ false) {
+        val dTeamName = Json.decodeFromString<PlayerDataStruct>(file.readText()).teamName ?: return
+        file = File(playerDataFolder, "${event.entity.uniqueId}.dat")
+
+        if (!file.exists()) {
+            return
+        }
+
+        val eTeamName = Json.decodeFromString<PlayerDataStruct>(file.readText()).teamName ?: return
+
+        if (dTeamName != eTeamName) {
+            return
+        }
+
+        file = File(plugin.dataFolder, "teamData.json")
+        val teams: List<TeamDataStruct> = Json.decodeFromString(file.readText())
+        val team = teams.find { it.name == dTeamName } ?: return
+
+        if (team.setting["team_pvp"] ?: return) {
             return
         }
 
@@ -57,5 +78,23 @@ class OnEvent(private val plugin: JavaPlugin) : Listener {
         }
 
         event.format = format
+
+        val chatStatus = teamChatStatus[event.player.uniqueId] ?: false
+        if(chatStatus){
+            val playerDataFolder = File(plugin.dataFolder, "playerData")
+            var file = File(playerDataFolder, "${event.player.uniqueId}.dat")
+
+            if (!file.exists()) {
+                return
+            }
+
+            val teamName = Json.decodeFromString<PlayerDataStruct>(file.readText()).teamName ?: return
+
+            file = File(plugin.dataFolder, "teamData.json")
+            val teams: List<TeamDataStruct> = Json.decodeFromString(file.readText())
+            val team = teams.find { it.name == teamName } ?: return
+
+            // 특정 플레이어 한태만 메세지 전송(team.members)
+        }
     }
 }

@@ -10,10 +10,8 @@ import org.cheesesand.csTeam.PlayerDataStruct
 import org.cheesesand.csTeam.TeamDataStruct
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
 import org.cheesesand.csTeam.teamNotFound
-import org.cheesesand.csTeam.unknownError
 import org.cheesesand.csTeam.isNotAPlayer
 import java.io.File
-import java.util.*
 import kotlin.collections.ArrayList
 
 class InfoAction(private val plugin: JavaPlugin): TeamActionCommand(){
@@ -25,9 +23,8 @@ class InfoAction(private val plugin: JavaPlugin): TeamActionCommand(){
                 throw isNotAPlayer
             }
 
-            val senderUUID: UUID = Bukkit.getPlayerUniqueId(sender.name) ?: throw unknownError
             val playerDataFolder = File(plugin.dataFolder, "playerData")
-            val playerfile = File(playerDataFolder, "${senderUUID}.dat")
+            val playerfile = File(playerDataFolder, "${sender.uniqueId}.dat")
 
             if (!playerfile.exists()) {
                 throw teamNotFound

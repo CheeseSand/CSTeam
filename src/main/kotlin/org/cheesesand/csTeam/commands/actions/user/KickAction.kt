@@ -2,8 +2,10 @@ package org.cheesesand.csTeam.commands.actions.user
 
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
+import org.cheesesand.csTeam.isNotAPlayer
 import org.cheesesand.csTeam.noHaveTeam
 import java.io.File
 
@@ -13,6 +15,10 @@ class KickAction(private val plugin: JavaPlugin): TeamActionCommand(){
         if(args.size <= 0){
             //throw invalidArgument
             return
+        }
+
+        if (sender !is Player){
+            throw isNotAPlayer
         }
 
         val targetPlayerUUID = Bukkit.getOfflinePlayer(args[0]).uniqueId
