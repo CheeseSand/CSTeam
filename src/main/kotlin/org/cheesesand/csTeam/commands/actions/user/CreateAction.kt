@@ -20,8 +20,7 @@ class CreateAction(private val plugin: JavaPlugin): TeamActionCommand(){
 
         val teamName: String = args[0]
         var file = File(plugin.dataFolder, "teamData.json")
-        var jsonString = file.readText()
-        val teams: List<TeamDataStruct> = Json.decodeFromString(jsonString)
+        val teams: List<TeamDataStruct> = Json.decodeFromString(file.readText())
 
         if(teams.any { it.name == teamName }){
             throw alreadyExistsTeam
@@ -32,8 +31,7 @@ class CreateAction(private val plugin: JavaPlugin): TeamActionCommand(){
         file = File(playerDataFolder, "${senderUUID}.dat")
 
         if(file.exists()){
-            jsonString = file.readText()
-            val playerD = Json.decodeFromString<PlayerDataStruct>(jsonString)
+            val playerD = Json.decodeFromString<PlayerDataStruct>(file.readText())
 
             if(playerD.teamName != null){
                 throw alreadyJoinTeam
@@ -51,7 +49,7 @@ class CreateAction(private val plugin: JavaPlugin): TeamActionCommand(){
             teamName = teamName
         )
 
-        jsonString = Json.encodeToString(team)
+        var jsonString = Json.encodeToString(team)
         file = File(plugin.dataFolder, "teamData.json")
         var context = file.readText().dropLast(1)
 
@@ -65,8 +63,7 @@ class CreateAction(private val plugin: JavaPlugin): TeamActionCommand(){
 
         jsonString = Json.encodeToString(player)
         playerDataFolder = File(plugin.dataFolder, "playerData")
-        file = File(playerDataFolder, "${senderUUID}.dat")
-        file.writeText(jsonString)
+        File(playerDataFolder, "${senderUUID}.dat").writeText(jsonString)
 
         sender.sendMessage(Component.text("팀이 생성되었습니다."))
     }

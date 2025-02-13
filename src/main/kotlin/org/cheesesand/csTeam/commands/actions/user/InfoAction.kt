@@ -44,8 +44,10 @@ class InfoAction(private val plugin: JavaPlugin): TeamActionCommand(){
         val teams: List<TeamDataStruct> = Json.decodeFromString(file.readText())
         val team = teams.find { it.name == teamName } ?: throw teamNotFound
 
+        sender.sendMessage(Component.text("---- 팀 정보 ----"))
         sender.sendMessage(Component.text("팀 이름: ${team.name}"))
         sender.sendMessage(Component.text("팀장: ${Bukkit.getOfflinePlayer(team.owner).name}"))
-        sender.sendMessage(Component.text("멤버: ${team.members.size}명"))
+        sender.sendMessage(Component.text("멤버 수: ${team.members.size}명"))
+        sender.sendMessage(Component.text("--------------"))
     }
 }

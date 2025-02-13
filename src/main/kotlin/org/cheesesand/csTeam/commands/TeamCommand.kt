@@ -14,26 +14,32 @@ class TeamCommand(plugin: JavaPlugin): CommandObject() {
 
     private val actions = HashMap<String, TeamActionCommand>()
     init {
-        actions["accept"] = AcceptAction()
+        actions["accept"] = AcceptAction(plugin)
         actions["chat"] = ChatAction()
         actions["create"] = CreateAction(plugin)
         actions["deny"] = DenyAction()
+        actions["help"] = HelpAction()
         actions["info"] = InfoAction(plugin)
-        actions["invite"] = InviteAction()
-        actions["kick"] = KickAction()
-        actions["leave"] = LeaveAction()
+        actions["invite"] = InviteAction(plugin)
+        actions["kick"] = KickAction(plugin)
+        actions["leave"] = LeaveAction(plugin)
         actions["list"] = ListAction(plugin)
         actions["remove"] = RemoveAction()
 
         actions["delete"] = DeleteAction()
-        actions["fkick"] = FKickAction()
+        actions["fkick"] = FKickAction(plugin)
         actions["fset"] = FSetAction()
         actions["reset"] = ResetAction(plugin)
     }
 
     override fun execute(event: CommandExecuteEvent): Boolean {
         try{
-            if(event.args.isEmpty() || !actions.keys.contains(event.args[0])){
+            if(event.args.isEmpty()){
+                actions["help"]?.execute(event.sender, ArrayList())
+                return true
+            }
+
+            if(!actions.keys.contains(event.args[0])){
                 throw executedCommandIsNotCorrect
             }
 
@@ -50,10 +56,12 @@ class TeamCommand(plugin: JavaPlugin): CommandObject() {
     override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
         if (tabCompleteEvent.args == null) {
             return actions.keys.toMutableList()
-        } else if (tabCompleteEvent.args.size == 1) {
-            return actions.keys.toMutableList()
-        } else {
-            return ArrayList()
         }
+
+        if (tabCompleteEvent.args.size == 1) {
+            return actions.keys.toMutableList()
+        }
+
+        return ArrayList()
     }
 }

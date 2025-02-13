@@ -9,6 +9,8 @@ import org.cheesesand.csTeam.commands.TeamCommand
 import org.teamcrez.daydream.wrapper.CommandObject
 import java.io.File
 
+val activeInvitations = mutableListOf<Invitation>()
+
 class CSTeam : JavaPlugin(), Listener {
     override fun onEnable() {
         fileExists()

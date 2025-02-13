@@ -25,3 +25,9 @@ val alreadyJoinTeam = TeamException(Component.text("이미 다른 팀에 들어�
 
 val teamNotFound = TeamException(Component.text("해당 팀을 찾을 수 없습니다.")
     .color(TextColor.fromHexString("#FF5555")))
+
+val noHaveTeam = TeamException(Component.text("해당 플레이어는 팀에 소속되어 있지 않습니다.")
+    .color(TextColor.fromHexString("#FF5555")))
+
+val playerNotFound = TeamException(Component.text("해당 플레이어를 찾을 수 없습니다.")
+    .color(TextColor.fromHexString("#FF5555")))

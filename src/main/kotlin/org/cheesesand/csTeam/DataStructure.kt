@@ -1,6 +1,7 @@
 package org.cheesesand.csTeam
 
 import kotlinx.serialization.Serializable
+import org.bukkit.entity.Player
 import java.util.UUID
 
 @Serializable
@@ -18,4 +19,10 @@ data class TeamDataStruct(
 data class PlayerDataStruct(
     var playerUUID: SUUID,
     var teamName: String? = null
+)
+
+data class Invitation(
+    val sender: Player,
+    val receiver: Player,
+    val expirationTime: Long
 )
