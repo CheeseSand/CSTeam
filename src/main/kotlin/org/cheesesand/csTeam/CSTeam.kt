@@ -6,6 +6,8 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.teamcrez.daydream.DayDream
 import org.cheesesand.csTeam.commands.TeamCommand
+import org.cheesesand.csTeam.events.PlayerAttackEvent
+import org.cheesesand.csTeam.events.PlayerChatEvent
 import org.teamcrez.daydream.wrapper.CommandObject
 import java.io.File
 import java.util.HashMap
@@ -91,7 +93,8 @@ class CSTeam : JavaPlugin(), Listener {
 
     private fun registerEvents() {
         server.pluginManager.apply {
-            this.registerEvents(OnEvent(this@CSTeam), this@CSTeam)
+            this.registerEvents(PlayerAttackEvent(this@CSTeam), this@CSTeam)
+            this.registerEvents(PlayerChatEvent(this@CSTeam), this@CSTeam)
         }
     }
 

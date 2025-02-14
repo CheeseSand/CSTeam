@@ -14,5 +14,6 @@ class ChatAction: TeamActionCommand(){
 
         val chatStatus = teamChatStatus[sender.uniqueId] ?: false
         teamChatStatus[sender.uniqueId] = !chatStatus
+        sender.sendMessage(teamChatStatus[sender.uniqueId].toString())
     }
 }

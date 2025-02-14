@@ -1,4 +1,7 @@
 name: CSTeam
 version: '1.0-SNAPSHOT'
+author: CheeseSand
+description: 팀 플러그인
+website: https://github.com/CheeseSand/CSTeam
 main: org.cheesesand.csTeam.CSTeam
 api-version: '1.20'
