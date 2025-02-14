@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.*
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 
 class FKickAction(private val plugin: JavaPlugin): TeamActionCommand(){
@@ -30,5 +31,17 @@ class FKickAction(private val plugin: JavaPlugin): TeamActionCommand(){
         file.delete()
 
         //json 파일에서 해당 플레이어의 팀을 제거
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        if (tabCompleteEvent.args?.size == 2) {
+            return Bukkit.getOnlinePlayers().map {
+                it.name
+            }.filter {
+                it.startsWith(tabCompleteEvent.args.lastOrNull() ?: "", ignoreCase = true)
+            }.toMutableList()
+        }
+
+        return mutableListOf()
     }
 }

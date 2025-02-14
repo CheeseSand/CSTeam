@@ -9,6 +9,7 @@ import org.cheesesand.csTeam.PlayerDataStruct
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
 import org.cheesesand.csTeam.activeInvitations
 import org.cheesesand.csTeam.isNotAPlayer
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 import kotlin.collections.ArrayList
 
@@ -43,5 +44,9 @@ class AcceptAction(private val plugin: JavaPlugin): TeamActionCommand(){
         activeInvitations.remove(invitation)
         invitation.sender.sendMessage(Component.text("${sender.name}님이 초대를 수락했습니다."))
         sender.sendMessage(Component.text("${invitation.sender.name}님의 초대를 수락했습니다."))
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        return mutableListOf()
     }
 }

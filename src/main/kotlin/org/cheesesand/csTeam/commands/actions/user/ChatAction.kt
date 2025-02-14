@@ -5,6 +5,7 @@ import org.bukkit.entity.Player
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
 import org.cheesesand.csTeam.isNotAPlayer
 import org.cheesesand.csTeam.teamChatStatus
+import org.teamcrez.daydream.event.TabCompleteEvent
 
 class ChatAction: TeamActionCommand(){
     override fun execute(sender: CommandSender, args: ArrayList<String>) {
@@ -15,5 +16,9 @@ class ChatAction: TeamActionCommand(){
         val chatStatus = teamChatStatus[sender.uniqueId] ?: false
         teamChatStatus[sender.uniqueId] = !chatStatus
         sender.sendMessage(teamChatStatus[sender.uniqueId].toString())
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        return mutableListOf()
     }
 }

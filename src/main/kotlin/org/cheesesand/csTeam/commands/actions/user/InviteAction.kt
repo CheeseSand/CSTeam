@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.*
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -77,5 +78,17 @@ class InviteAction(private val plugin: JavaPlugin): TeamActionCommand(){
                 target.sendMessage(Component.text("${sender.name}님의 초대가 만료되었습니다."))
             }
         }, 2 * 60 * 20L)
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        if (tabCompleteEvent.args?.size == 2) {
+            return Bukkit.getOnlinePlayers().map {
+                it.name
+            }.filter {
+                it.startsWith(tabCompleteEvent.args.lastOrNull() ?: "", ignoreCase = true)
+            }.toMutableList()
+        }
+
+        return mutableListOf()
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.*
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 
 class RemoveAction(private val plugin: JavaPlugin): TeamActionCommand(){
@@ -42,5 +43,9 @@ class RemoveAction(private val plugin: JavaPlugin): TeamActionCommand(){
         }
 
         // 팀 json 파일에서 제거
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        return mutableListOf()
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.TeamDataStruct
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 
 class ListAction(private val plugin: JavaPlugin): TeamActionCommand(){
@@ -37,5 +38,13 @@ class ListAction(private val plugin: JavaPlugin): TeamActionCommand(){
         }
 
         sender.sendMessage(Component.text("--- /csteam list [page]로 더 보기 ---"))
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        if (tabCompleteEvent.args?.size == 2) {
+            return mutableListOf("[페이지]")
+        }
+
+        return mutableListOf()
     }
 }

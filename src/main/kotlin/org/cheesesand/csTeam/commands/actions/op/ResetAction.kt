@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.*
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 
 class ResetAction(private val plugin: JavaPlugin): TeamActionCommand(){
@@ -31,5 +32,9 @@ class ResetAction(private val plugin: JavaPlugin): TeamActionCommand(){
 
         sender.sendMessage(Component.text("모든 팀 데이터를 초기화했습니다.")
             .color(TextColor.fromHexString("#FF5555")))
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        return mutableListOf()
     }
 }

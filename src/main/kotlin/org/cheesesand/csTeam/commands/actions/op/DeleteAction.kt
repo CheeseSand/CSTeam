@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.*
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 
 class DeleteAction(private val plugin: JavaPlugin): TeamActionCommand(){
@@ -29,5 +30,20 @@ class DeleteAction(private val plugin: JavaPlugin): TeamActionCommand(){
         }
 
         // 팀 json 파일에서 제거
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        if(tabCompleteEvent.args?.size == 2){
+            val file = File(plugin.dataFolder, "teamData.json")
+            val teams: List<TeamDataStruct> = Json.decodeFromString(file.readText())
+
+            return teams.map {
+                it.name
+            }.filter {
+                it.startsWith(tabCompleteEvent.args.lastOrNull() ?: "", ignoreCase = true)
+            }.toMutableList()
+        }
+
+        return mutableListOf()
     }
 }

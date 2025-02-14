@@ -11,6 +11,7 @@ import org.cheesesand.csTeam.TeamDataStruct
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
 import org.cheesesand.csTeam.teamNotFound
 import org.cheesesand.csTeam.isNotAPlayer
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 import kotlin.collections.ArrayList
 
@@ -46,5 +47,20 @@ class InfoAction(private val plugin: JavaPlugin): TeamActionCommand(){
         sender.sendMessage(Component.text("팀장: ${Bukkit.getOfflinePlayer(team.owner).name}"))
         sender.sendMessage(Component.text("멤버 수: ${team.members.size}명"))
         sender.sendMessage(Component.text("--------------"))
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        if(tabCompleteEvent.args?.size == 2){
+            val file = File(plugin.dataFolder, "teamData.json")
+            val teams: List<TeamDataStruct> = Json.decodeFromString(file.readText())
+
+            return teams.map {
+                it.name
+            }.filter {
+                it.startsWith(tabCompleteEvent.args.lastOrNull() ?: "", ignoreCase = true)
+            }.toMutableList()
+        }
+
+        return mutableListOf()
     }
 }

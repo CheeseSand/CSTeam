@@ -10,6 +10,7 @@ import org.cheesesand.csTeam.commands.actions.TeamActionCommand
 import org.cheesesand.csTeam.isNotAPlayer
 import org.cheesesand.csTeam.noHaveTeam
 import org.cheesesand.csTeam.unknownError
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 
 class LeaveAction(private val plugin: JavaPlugin): TeamActionCommand(){
@@ -40,5 +41,9 @@ class LeaveAction(private val plugin: JavaPlugin): TeamActionCommand(){
 
 
         //json 파일에서 해당 플레이어의 팀을 제거
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        return mutableListOf()
     }
 }

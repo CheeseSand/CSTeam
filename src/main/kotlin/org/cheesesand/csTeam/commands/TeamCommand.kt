@@ -1,9 +1,6 @@
 package org.cheesesand.csTeam.commands
 
-import kotlinx.serialization.json.Json
-import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
-import org.cheesesand.csTeam.TeamDataStruct
 import org.cheesesand.csTeam.TeamException
 import org.cheesesand.csTeam.commands.actions.*
 import org.cheesesand.csTeam.commands.actions.op.*
@@ -12,7 +9,6 @@ import org.cheesesand.csTeam.executedCommandIsNotCorrect
 import org.teamcrez.daydream.event.CommandExecuteEvent
 import org.teamcrez.daydream.event.TabCompleteEvent
 import org.teamcrez.daydream.wrapper.CommandObject
-import java.io.File
 
 class TeamCommand(plugin: JavaPlugin): CommandObject() {
 
@@ -63,46 +59,18 @@ class TeamCommand(plugin: JavaPlugin): CommandObject() {
             return actions.keys.toMutableList()
         }
 
-        val currentInput = tabCompleteEvent.args.lastOrNull() ?: ""
-
         if (tabCompleteEvent.args.size == 1) {
             return actions.keys.filter {
-                it.startsWith(currentInput, ignoreCase = true)
+                it.startsWith(tabCompleteEvent.args.lastOrNull() ?: "", ignoreCase = true)
             }.toMutableList()
         }
 
-        if(tabCompleteEvent.args.size == 2){
-            if(tabCompleteEvent.args[0] == "create"){
-                return mutableListOf("[팀 이름]")
+        if(tabCompleteEvent.args.size >= 2){
+            if(!actions.keys.contains(tabCompleteEvent.args[0])){
+                return mutableListOf()
             }
 
-            if(tabCompleteEvent.args[0] == "help"){
-                return mutableListOf("[명령어]")
-            }
-
-            if(tabCompleteEvent.args[0] == "info" || tabCompleteEvent.args[0] == "delete"){
-//                val file = File(plugin.dataFolder, "teamData.json")
-//                val teams: List<TeamDataStruct> = Json.decodeFromString(file.readText())
-//
-//                return teams.map {
-//                    it.name
-//                }.filter {
-//                    it.startsWith(currentInput, ignoreCase = true)
-//                }.toMutableList()
-                return mutableListOf("[팀 이름]")
-            }
-
-            if(tabCompleteEvent.args[0] == "invite" || tabCompleteEvent.args[0] == "kick" || tabCompleteEvent.args[0] == "fkick" || tabCompleteEvent.args[0] == "fset"){
-                return Bukkit.getOnlinePlayers().map {
-                    it.name
-                }.filter {
-                    it.startsWith(currentInput, ignoreCase = true)
-                }.toMutableList()
-            }
-
-            if (tabCompleteEvent.args[0] == "list"){
-                return mutableListOf("[페이지]")
-            }
+            return (actions[tabCompleteEvent.args[0]] ?: return mutableListOf()).tabComplete(tabCompleteEvent)
         }
 
         return mutableListOf()

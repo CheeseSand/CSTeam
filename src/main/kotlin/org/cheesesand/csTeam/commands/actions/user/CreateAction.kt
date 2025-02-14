@@ -7,6 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.cheesesand.csTeam.*
 import org.cheesesand.csTeam.commands.actions.TeamActionCommand
+import org.teamcrez.daydream.event.TabCompleteEvent
 import java.io.File
 import java.util.UUID
 
@@ -65,5 +66,13 @@ class CreateAction(private val plugin: JavaPlugin): TeamActionCommand(){
         File(playerDataFolder, "${senderUUID}.dat").writeText(jsonString)
 
         sender.sendMessage(Component.text("팀이 생성되었습니다."))
+    }
+
+    override fun tabComplete(tabCompleteEvent: TabCompleteEvent): MutableList<String> {
+        if(tabCompleteEvent.args?.size == 2){
+            return mutableListOf("[팀 이름]")
+        }
+
+        return mutableListOf()
     }
 }
